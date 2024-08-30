@@ -1,0 +1,11 @@
+﻿{
+  "name": "SpawnPrefab",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/Lawlzee/SpawnPrefab",
+  "displayName": "Spawn Prefab",
+  "description": "Adds a command to spawn a prefab. `spawn_prefab <prefab_key> <pos_x> <pos_y> <pos_z> <rotation_x> <rotation_y> <rotation_z>`",
+  "dependencies": [
+    "bbepis-BepInExPack-5.4.2108",
+    "RiskofThunder-HookGenPatcher-1.2.3"
+  ]
+}
