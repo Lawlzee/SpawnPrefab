@@ -5,6 +5,7 @@ using System.IO;
 using RoR2;
 using UnityEngine.AddressableAssets;
 using System.Linq;
+using UnityEngine.Networking;
 
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
@@ -16,9 +17,9 @@ public class SpawnPrefabPlugin : BaseUnityPlugin
     public const string PluginGUID = "Lawlzee.SpawnPrefab";
     public const string PluginAuthor = "Lawlzee";
     public const string PluginName = "SpawnPrefab";
-    public const string PluginVersion = "1.0.0";
+    public const string PluginVersion = "1.1.0";
 
-    private const string _description = "`spawn_prefab <prefab_key> <pos_x> <pos_y> <pos_z> <rotation_x> <rotation_y> <rotation_z>`: Use the '~' prefix before a position value to make it relative to the player's position. Similarly, use the '~' prefix before a rotation value to make it relative to the prefab's base rotation. For a list of available prefabs, refer to https://xiaoxiao921.github.io/GithubActionCacheTest/assetPathsDump.html";
+    private const string _description = "`spawn_prefab \"<prefab_key>\" <pos_x> <pos_y> <pos_z> <rotation_x> <rotation_y> <rotation_z>`: Use the '~' prefix before a position value to make it relative to the player's position. Similarly, use the '~' prefix before a rotation value to make it relative to the prefab's base rotation. For a list of available prefabs, refer to https://xiaoxiao921.github.io/GithubActionCacheTest/assetPathsDump.html";
 
     public void Awake()
     {
@@ -61,7 +62,11 @@ public class SpawnPrefabPlugin : BaseUnityPlugin
             GetValue(5).Apply(prefab.transform.rotation.y),
             GetValue(6).Apply(prefab.transform.rotation.z));
 
-        Instantiate(prefab, position, Quaternion.Euler(rotation));
+        GameObject gameObject = Instantiate(prefab, position, Quaternion.Euler(rotation));
+        if (gameObject.GetComponent<NetworkIdentity>() != null)
+        {
+            NetworkServer.Spawn(gameObject);
+        }
 
         Debug.Log($"Prefab '{prefabKey}' spawned at {position}");
 
